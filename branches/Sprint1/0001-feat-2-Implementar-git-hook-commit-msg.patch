@@ -1,0 +1,38 @@
+From 6fafd673b93474226c3abc1716751b286c2b9692 Mon Sep 17 00:00:00 2001
+From: janiopi <janio072003@hotmail.com>
+Date: Sat, 7 Jun 2025 14:16:43 -0500
+Subject: [PATCH] feat[#2]: Implementar git hook commit-msg
+
+---
+ git/hooks/commit-msg.sh | 18 ++++++++++++++++++
+ 1 file changed, 18 insertions(+)
+ create mode 100644 git/hooks/commit-msg.sh
+
+diff --git a/git/hooks/commit-msg.sh b/git/hooks/commit-msg.sh
+new file mode 100644
+index 0000000..6ed5065
+--- /dev/null
++++ b/git/hooks/commit-msg.sh
+@@ -0,0 +1,18 @@
++#!/bin/bash
++#Hook para asegurar un correcto mensaje de commit usando prefijos estandar
++
++# leer el mensaje del commit
++MSJ_COMMIT=$1
++MENSAJE=$(cat "$MSJ_COMMIT")
++
++# solo se permiten tipos feat, fix, refactor, docs, test
++PATRON="^(feat|fix|refactor|docs|test)\[#([0-9]+)\]: .+"
++
++if ! echo "$MENSAJE" | grep -Eq "$PATRON"; then
++    echo " Error: El mensaje del commit debe seguir el patron '<tipo>[#n]: mensaje'"
++    echo " Tipos permitidos: feat, fix, refactor, docs, test"
++    echo " Ejemplo valido: feat[#1]: Inicializar repositorio y estructura"
++    exit 1
++fi
++
++exit
+\ No newline at end of file
+-- 
+2.34.1
+
